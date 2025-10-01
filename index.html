@@ -1,0 +1,268 @@
+<!--
+Instagram Followers Booster - single-file HTML
+
+How to use:
+1. Open this file in a browser to test the UI locally.
+2. To receive form submissions in your Gmail, replace the PLACEHOLDER_FORM_ENDPOINT below with a Formspree endpoint or your server endpoint.
+   - Option A (quick): Create a free form at https://formspree.io/, get the form endpoint (looks like https://formspree.io/f/xxxxx) and paste it into the `FORM_ENDPOINT` constant inside the <script>.
+   - Option B (advanced): Deploy a Google Apps Script Web App that accepts POST and sends an email to your Gmail. See the sample Apps Script in the <details> at the bottom of this file.
+3. If you don't configure an endpoint, the form will fallback to opening the user's email client (mailto:) prefilled with the data — note this sends from the user's email, not directly to your inbox.
+
+Notes:
+- This is a static frontend. To reliably collect submissions into your Gmail automatically you will need a server-side endpoint (Formspree or Apps Script recommended).
+- The admin email from memory is used as example recipient: abdullakhan.tt1@gmail.com
+--><!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Instagram Followers Booster - Quick Form</title>
+  <style>
+    :root{--bg:#0f1724;--card:#0b1220;--accent:#06b6d4;--muted:#94a3b8;--glass:rgba(255,255,255,0.03)}
+    *{box-sizing:border-box}
+    body{font-family:Inter,system-ui,Segoe UI,Roboto,Arial;min-height:100vh;margin:0;background:linear-gradient(180deg,#071024 0%,#021027 100%);color:#e6eef6;display:flex;align-items:center;justify-content:center;padding:24px}
+    .wrap{width:100%;max-width:720px;background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));border-radius:12px;padding:22px;box-shadow:0 10px 30px rgba(2,6,23,0.7)}
+    h1{margin:0 0 10px;font-size:20px}
+    p.lead{margin:0 0 18px;color:var(--muted)}
+    .card{background:var(--card);padding:18px;border-radius:10px}
+    label{display:block;margin-bottom:8px;font-weight:600}
+    input[type=text], input[type=number], input[type=tel], select{width:100%;padding:10px;border-radius:8px;background:var(--glass);border:1px solid rgba(255,255,255,0.03);color:inherit}
+    .row{display:flex;gap:12px}
+    .col{flex:1}
+    .options{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+    .option{padding:8px 12px;border-radius:8px;background:rgba(255,255,255,0.02);cursor:pointer;border:1px solid transparent}
+    .option.selected{border-color:var(--accent);box-shadow:0 6px 18px rgba(6,182,212,0.06)}
+    .steps{display:flex;gap:8px;margin:12px 0}
+    .step{flex:1;padding:8px;border-radius:8px;background:rgba(255,255,255,0.01);text-align:center;font-size:13px}
+    .step.active{background:linear-gradient(90deg,rgba(6,182,212,0.12),rgba(99,102,241,0.06));border:1px solid rgba(6,182,212,0.12)}
+    .actions{display:flex;gap:8px;justify-content:flex-end;margin-top:14px}
+    button{background:var(--accent);color:#021027;padding:10px 14px;border-radius:10px;border:none;font-weight:700;cursor:pointer}
+    button.ghost{background:transparent;color:var(--muted);border:1px solid rgba(255,255,255,0.04)}
+    .small{font-size:13px;color:var(--muted)}
+    .review{background:rgba(255,255,255,0.02);padding:12px;border-radius:8px;margin-top:10px}
+    footer{margin-top:12px;text-align:center;color:var(--muted);font-size:13px}
+    @media(max-width:520px){.row{flex-direction:column}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Instagram Booster — Quick Form</h1>
+    <p class="lead">Enter the username, choose a service, add quantity, redeem with code and submit. Replace the Form endpoint in the script to receive submissions in your Gmail.</p><div class="card" id="formCard">
+  <div class="steps">
+    <div class="step active" data-step="1">1. Username</div>
+    <div class="step" data-step="2">2. Service</div>
+    <div class="step" data-step="3">3. Quantity</div>
+    <div class="step" data-step="4">4. Payment</div>
+    <div class="step" data-step="5">5. Submit</div>
+  </div>
+
+  <!-- Step 1 -->
+  <div class="step-pane" data-step="1">
+    <label for="username">Instagram Username</label>
+    <input type="text" id="username" placeholder="e.g. @yourusername or yourusername" autocomplete="off">
+    <div class="small" style="margin-top:8px">Please enter the Instagram username you want to boost.</div>
+    <div class="actions">
+      <button id="toStep2" class="ghost" disabled>Next</button>
+    </div>
+  </div>
+
+  <!-- Step 2 -->
+  <div class="step-pane" data-step="2" style="display:none;margin-top:8px">
+    <label>Choose a service</label>
+    <div class="options" id="serviceOptions">
+      <div class="option" data-value="likes">Likes</div>
+      <div class="option" data-value="comments">Comments</div>
+      <div class="option" data-value="followers">Followers</div>
+      <div class="option" data-value="story_views">Story Views</div>
+    </div>
+    <div class="small">Tap a service. Only one service may be selected at a time.</div>
+    <div class="actions">
+      <button id="backTo1" class="ghost">Back</button>
+      <button id="toStep3" class="ghost" disabled>Next</button>
+    </div>
+  </div>
+
+  <!-- Step 3 -->
+  <div class="step-pane" data-step="3" style="display:none;margin-top:8px">
+    <label for="quantity">Quantity (how many)</label>
+    <input type="number" id="quantity" placeholder="e.g. 100" min="1">
+    <div class="small" style="margin-top:8px">Enter the number of likes/comments/followers/story views you want.</div>
+    <div class="actions">
+      <button id="backTo2" class="ghost">Back</button>
+      <button id="toStep4" class="ghost" disabled>Next</button>
+    </div>
+  </div>
+
+  <!-- Step 4 -->
+  <div class="step-pane" data-step="4" style="display:none;margin-top:8px">
+    <label for="redeem">Redeem Code (to pay)</label>
+    <input type="text" id="redeem" placeholder="Enter redeem code">
+    <div class="small" style="margin-top:8px">Redeem codes are alphanumeric. This demo does not validate codes against a server — it only checks format. Replace validation with your backend if needed.</div>
+    <div style="margin-top:10px">
+      <button id="applyRedeem" class="ghost">Apply</button>
+    </div>
+    <div id="redeemResult" class="small" style="margin-top:8px"></div>
+    <div class="actions">
+      <button id="backTo3" class="ghost">Back</button>
+      <button id="toStep5" class="ghost" disabled>Next</button>
+    </div>
+  </div>
+
+  <!-- Step 5 -->
+  <div class="step-pane" data-step="5" style="display:none;margin-top:8px">
+    <label>Review & Submit</label>
+    <div class="review" id="reviewBox">
+      <!-- live review populated by JS -->
+    </div>
+    <div class="actions">
+      <button id="backTo4" class="ghost">Back</button>
+      <button id="submitBtn">Submit</button>
+    </div>
+  </div>
+
+</div>
+
+<footer>Made for quick testing — connect a server to collect submissions automatically.</footer>
+
+  </div>  <script>
+    // CONFIG: replace with your Formspree endpoint or server endpoint that accepts JSON POST.
+    // Example Formspree endpoint: https://formspree.io/f/xyzabc
+    const FORM_ENDPOINT = "https://formspree.io/f/PLACEHOLDER"; // <-- REPLACE THIS
+    const FALLBACK_EMAIL = "abdullakhan.tt1@gmail.com"; // example recipient (replace if you want)
+
+    // UI helpers
+    const steps = document.querySelectorAll('.step');
+    const panes = document.querySelectorAll('.step-pane');
+    function showStep(n){
+      steps.forEach(s=>s.classList.toggle('active', Number(s.dataset.step)===n));
+      panes.forEach(p=>p.style.display = (Number(p.dataset.step)===n)? 'block' : 'none');
+    }
+
+    // Step 1
+    const username = document.getElementById('username');
+    const toStep2 = document.getElementById('toStep2');
+    username.addEventListener('input', ()=>{
+      toStep2.disabled = username.value.trim().length < 2;
+    });
+    toStep2.addEventListener('click', ()=> showStep(2));
+
+    // Step 2
+    const options = document.querySelectorAll('.option');
+    const toStep3 = document.getElementById('toStep3');
+    let selectedService = null;
+    options.forEach(opt=>opt.addEventListener('click', ()=>{
+      options.forEach(o=>o.classList.remove('selected'));
+      opt.classList.add('selected');
+      selectedService = opt.dataset.value;
+      toStep3.disabled = false;
+    }));
+    document.getElementById('backTo1').addEventListener('click', ()=> showStep(1));
+    toStep3.addEventListener('click', ()=> showStep(3));
+
+    // Step 3
+    const quantity = document.getElementById('quantity');
+    const toStep4 = document.getElementById('toStep4');
+    quantity.addEventListener('input', ()=>{
+      const val = Number(quantity.value);
+      toStep4.disabled = !(Number.isInteger(val) && val>0);
+    });
+    document.getElementById('backTo2').addEventListener('click', ()=> showStep(2));
+    toStep4.addEventListener('click', ()=> showStep(4));
+
+    // Step 4 - redeem
+    const redeem = document.getElementById('redeem');
+    const applyRedeem = document.getElementById('applyRedeem');
+    const redeemResult = document.getElementById('redeemResult');
+    const toStep5 = document.getElementById('toStep5');
+    let redeemApplied = false;
+
+    applyRedeem.addEventListener('click', ()=>{
+      const code = redeem.value.trim();
+      if(!code){ redeemResult.textContent = 'Enter a redeem code.'; redeemApplied=false; toStep5.disabled=true; return; }
+      // simple format check
+      if(!/^[A-Za-z0-9\-]{4,20}$/.test(code)){
+        redeemResult.textContent = 'Invalid code format. Use 4-20 alphanumeric characters.'; redeemApplied=false; toStep5.disabled=true; return;
+      }
+      // NOTE: this demo does not validate code on a server. If you have a validation endpoint, call it here.
+      redeemResult.textContent = 'Redeem code accepted (demo).'; redeemApplied=true; toStep5.disabled=false;
+    });
+
+    document.getElementById('backTo3').addEventListener('click', ()=> showStep(3));
+    toStep5.addEventListener('click', ()=>{
+      // populate review
+      const review = document.getElementById('reviewBox');
+      const uname = username.value.trim();
+      const servLabel = ({likes:'Likes',comments:'Comments',followers:'Followers',story_views:'Story Views'}[selectedService]||selectedService);
+      const qty = quantity.value;
+      const code = redeem.value.trim();
+      review.innerHTML = `
+        <div><strong>Username:</strong> ${escapeHtml(uname)}</div>
+        <div><strong>Service:</strong> ${escapeHtml(servLabel)}</div>
+        <div><strong>Quantity:</strong> ${escapeHtml(qty)}</div>
+        <div><strong>Redeem Code:</strong> ${escapeHtml(code)}</div>
+      `;
+      showStep(5);
+    });
+
+    // Step 5 - submit
+    document.getElementById('backTo4').addEventListener('click', ()=> showStep(4));
+    document.getElementById('submitBtn').addEventListener('click', submitForm);
+
+    function submitForm(){
+      const data = {
+        username: username.value.trim(),
+        service: selectedService,
+        quantity: Number(quantity.value),
+        redeem_code: redeem.value.trim(),
+        submitted_at: new Date().toISOString()
+      };
+
+      // If you replaced FORM_ENDPOINT with a real endpoint, we will POST JSON to it.
+      if(FORM_ENDPOINT && !FORM_ENDPOINT.includes('PLACEHOLDER')){
+        fetch(FORM_ENDPOINT, {
+          method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(data)
+        }).then(async res=>{
+          if(res.ok){
+            alert('Submitted — thank you!');
+            resetAll();
+          } else {
+            const t = await res.text();
+            alert('Server responded with error: '+res.status+'\n'+t);
+          }
+        }).catch(err=>{
+          alert('Failed to submit to the endpoint. See console for details.'); console.error(err);
+        });
+        return;
+      }
+
+      // FALLBACK: open user's email client with mailto: to the FALLBACK_EMAIL address
+      const subject = encodeURIComponent('New booster request from web form');
+      const body = encodeURIComponent(Object.entries(data).map(([k,v])=>`${k}: ${v}`).join('\n'));
+      window.location.href = `mailto:${FALLBACK_EMAIL}?subject=${subject}&body=${body}`;
+    }
+
+    function resetAll(){
+      username.value=''; toStep2.disabled=true;
+      options.forEach(o=>o.classList.remove('selected')); selectedService=null; toStep3.disabled=true;
+      quantity.value=''; toStep4.disabled=true;
+      redeem.value=''; redeemResult.textContent=''; redeemApplied=false; toStep5.disabled=true;
+      showStep(1);
+    }
+
+    // utility
+    function escapeHtml(s){
+      return String(s).replace(/[&<>"']/g,function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m];});
+    }
+
+    // init
+    showStep(1);
+  </script>  <details style="margin-top:18px;color:var(--muted);font-size:13px">
+    <summary>Sample Google Apps Script to receive POSTs and email to your Gmail (deploy as Web App)</summary><pre style="white-space:pre-wrap;margin-top:8px;background:#071424;padding:10px;border-radius:6px;overflow:auto">
+
+// Google Apps Script server-side code (Code.gs) function doPost(e){ try{ var data = JSON.parse(e.postData.contents); var body = Object.keys(data).map(k => k+": "+data[k]).join('\n'); MailApp.sendEmail('YOUR_EMAIL@gmail.com','Booster form submission',body); return ContentService.createTextOutput(JSON.stringify({status:'ok'})).setMimeType(ContentService.MimeType.JSON); }catch(err){ return ContentService.createTextOutput(JSON.stringify({status:'error', message:err.message})).setMimeType(ContentService.MimeType.JSON); } }
+
+// After saving: Publish -> Deploy as web app -> Execute as: Me; Who has access: Anyone, even anonymous // Then copy the Web App URL and use it as FORM_ENDPOINT in this HTML file. </pre>
+
+  </details></body>
+</html>
