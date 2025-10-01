@@ -160,46 +160,4 @@ function showStep(current,next){
 }
 </script>
 </body>
-</html>  }
-
-  const username = document.getElementById('username');
-  const toStep2 = document.getElementById('toStep2');
-  username.addEventListener('input',()=>{toStep2.disabled=username.value.trim().length<2});
-  toStep2.addEventListener('click',()=>showStep(2));
-
-  const options = document.querySelectorAll('.option');
-  const toStep3=document.getElementById('toStep3');
-  const serviceField=document.getElementById('serviceField');
-  options.forEach(o=>o.addEventListener('click',()=>{
-    options.forEach(x=>x.classList.remove('selected'));
-    o.classList.add('selected');
-    serviceField.value=o.dataset.value;
-    toStep3.disabled=false;
-  }));
-  document.getElementById('backTo1').addEventListener('click',()=>showStep(1));
-  toStep3.addEventListener('click',()=>showStep(3));
-
-  const quantity=document.getElementById('quantity');
-  const toStep4=document.getElementById('toStep4');
-  quantity.addEventListener('input',()=>{toStep4.disabled=!(Number(quantity.value)>0)});
-  document.getElementById('backTo2').addEventListener('click',()=>showStep(2));
-  toStep4.addEventListener('click',()=>showStep(4));
-
-  const redeem=document.getElementById('redeem');
-  const toStep5=document.getElementById('toStep5');
-  redeem.addEventListener('input',()=>{toStep5.disabled=redeem.value.trim().length>3});
-  document.getElementById('backTo3').addEventListener('click',()=>showStep(3));
-  toStep5.addEventListener('click',()=>{
-    const review=document.getElementById('reviewBox');
-    review.innerHTML=`<div><strong>Username:</strong> ${username.value}</div>
-      <div><strong>Service:</strong> ${serviceField.value}</div>
-      <div><strong>Quantity:</strong> ${quantity.value}</div>
-      <div><strong>Redeem Code:</strong> ${redeem.value}</div>`;
-    showStep(5);
-  });
-
-  document.getElementById('backTo4').addEventListener('click',()=>showStep(4));
-
-  showStep(1);
-</script></body>
 </html>
