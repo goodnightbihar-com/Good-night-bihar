@@ -7,25 +7,41 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;font-family:'Inter',sans-serif}
-body{min-height:100vh;background:linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);display:flex;justify-content:center;align-items:center;padding:20px;color:#fff}
-.wrap{background:rgba(255,255,255,0.05);border-radius:15px;padding:30px;max-width:500px;width:100%;box-shadow:0 8px 20px rgba(0,0,0,0.3)}
+body{min-height:100vh;background:linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);display:flex;justify-content:center;align-items:center;padding:20px;color:#fff;position:relative}
+.wrap{background:rgba(255,255,255,0.05);border-radius:15px;padding:30px;max-width:500px;width:100%;box-shadow:0 8px 20px rgba(0,0,0,0.3);overflow:hidden;position:relative}
 h1{text-align:center;margin-bottom:15px;font-size:24px;letter-spacing:0.5px}
 p.lead{text-align:center;margin-bottom:25px;color:rgba(255,255,255,0.8)}
 label{display:block;margin-bottom:8px;font-weight:600}
-input[type=text], input[type=number]{width:100%;padding:12px 10px;border-radius:10px;border:none;background:rgba(255,255,255,0.1);color:#fff;margin-bottom:15px;font-size:15px}
+input[type=text], input[type=number]{width:100%;padding:12px 10px;border-radius:10px;border:none;background:rgba(255,255,255,0.1);color:#fff;margin-bottom:15px;font-size:15px;transition:0.2s}
+input[type=text]:focus, input[type=number]:focus{background:rgba(255,255,255,0.2);outline:none}
 .options{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:15px}
-.option{flex:1;text-align:center;padding:10px 0;border-radius:10px;background:rgba(255,255,255,0.1);cursor:pointer;transition:0.2s;border:2px solid transparent}
-.option.selected{border-color:#fff;box-shadow:0 4px 12px rgba(255,255,255,0.3)}
-.actions{display:flex;justify-content:space-between;margin-top:10px}
-button{padding:10px 18px;border-radius:10px;border:none;font-weight:600;cursor:pointer;transition:0.2s}
+.option{flex:1;text-align:center;padding:10px 0;border-radius:10px;background:rgba(255,255,255,0.1);cursor:pointer;transition:0.3s;border:2px solid transparent}
+.option.selected{border-color:#fff;box-shadow:0 4px 12px rgba(255,255,255,0.3);transform:scale(1.05);}
+.actions{display:flex;justify-content:space-between;margin-top:10px;transition:0.3s}
+button{padding:10px 18px;border-radius:10px;border:none;font-weight:600;cursor:pointer;transition:0.3s}
 button.ghost{background:rgba(255,255,255,0.1);color:#fff} 
-button:hover{opacity:0.9}
+button:hover{opacity:0.9;transform:scale(1.05)}
 button.submit{background:#fff;color:#dc2366}
-.review{background:rgba(255,255,255,0.1);padding:15px;border-radius:10px;margin-bottom:15px;line-height:1.5}
-.price-display{margin-bottom:15px;background:rgba(255,255,255,0.1);padding:10px;border-radius:10px;text-align:center;font-weight:600}
+.review{background:rgba(255,255,255,0.1);padding:15px;border-radius:10px;margin-bottom:15px;line-height:1.5;transition:0.3s}
+.price-display{margin-bottom:15px;background:rgba(255,255,255,0.1);padding:10px;border-radius:10px;text-align:center;font-weight:600;transition:0.3s}
 footer{text-align:center;margin-top:20px;font-size:14px}
 footer a{color:#fff;text-decoration:none;font-weight:600}
 .error{color:#ff8080;font-size:13px;margin-bottom:10px;display:none}
+
+/* Step animation */
+.step-pane{position:absolute;top:0;left:0;width:100%;opacity:0;transform:translateX(50px);transition:0.5s;pointer-events:none;}
+.step-pane.active{opacity:1;transform:translateX(0);pointer-events:auto;position:relative}
+
+/* Modal styles */
+#confirmationModal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);display:flex;justify-content:center;align-items:center;opacity:0;visibility:hidden;transition:0.3s;}
+#confirmationModal.active{opacity:1;visibility:visible;}
+.modal-content{background:#fff;color:#000;padding:25px 30px;border-radius:15px;text-align:center;max-width:400px;width:90%;transform:scale(0.8);transition:0.3s}
+#confirmationModal.active .modal-content{transform:scale(1)}
+.modal-content h2{margin-bottom:15px}
+.modal-content p{margin-top:10px;font-size:14px;color:#333}
+.modal-content a{color:#dc2366;text-decoration:underline}
+.modal-content button{margin-top:15px;background:#dc2366;color:#fff;border:none;padding:10px 18px;border-radius:10px;cursor:pointer;font-weight:600;transition:0.2s}
+.modal-content button:hover{opacity:0.9;transform:scale(1.05);}
 </style>
 </head>
 <body>
@@ -35,16 +51,17 @@ footer a{color:#fff;text-decoration:none;font-weight:600}
 <form id="orderForm" action="https://formspree.io/f/mgvlqank" method="POST">
 
 <!-- Step 1 -->
-<div class="step-pane" data-step="1">
+<div class="step-pane active" data-step="1">
 <label for="username">Instagram Username</label>
 <input type="text" id="username" name="username" placeholder="@yourusername" required>
+<div class="error" id="usernameError">Invalid username format</div>
 <div class="actions">
 <button type="button" id="toStep2" class="ghost" disabled>Next</button>
 </div>
 </div>
 
 <!-- Step 2 -->
-<div class="step-pane" data-step="2" style="display:none">
+<div class="step-pane" data-step="2">
 <label>Choose a Service</label>
 <div class="options" id="serviceOptions">
 <div class="option" data-value="Likes">Likes</div>
@@ -60,7 +77,7 @@ footer a{color:#fff;text-decoration:none;font-weight:600}
 </div>
 
 <!-- Step 3 -->
-<div class="step-pane" data-step="3" style="display:none">
+<div class="step-pane" data-step="3">
 <label for="quantity">Quantity</label>
 <input type="number" id="quantity" name="quantity" placeholder="e.g. 100" min="1" required>
 <div class="price-display" id="priceDisplay">Price: ₹0</div>
@@ -71,7 +88,7 @@ footer a{color:#fff;text-decoration:none;font-weight:600}
 </div>
 
 <!-- Step 4 -->
-<div class="step-pane" data-step="4" style="display:none">
+<div class="step-pane" data-step="4">
 <label for="redeem">Redeem Code</label>
 <input type="text" id="redeem" name="redeem" placeholder="Enter redeem code" required>
 <div class="error" id="redeemError">Invalid redeem code</div>
@@ -82,7 +99,7 @@ footer a{color:#fff;text-decoration:none;font-weight:600}
 </div>
 
 <!-- Step 5 -->
-<div class="step-pane" data-step="5" style="display:none">
+<div class="step-pane" data-step="5">
 <div class="review" id="reviewBox"></div>
 <div class="actions">
 <button type="button" id="backTo4" class="ghost">Back</button>
@@ -96,13 +113,39 @@ footer a{color:#fff;text-decoration:none;font-weight:600}
 </footer>
 </div>
 
+<!-- Confirmation Modal -->
+<div id="confirmationModal">
+  <div class="modal-content">
+    <h2>Order Placed Successfully!</h2>
+    <p>Thank you for your order. We will process it shortly.</p>
+    <p><strong>Note:</strong> If you do not receive your service within 30 minutes, please 
+      <a href="https://www.instagram.com/urbro.pathan" target="_blank">click here</a> to DM the developer on Instagram.
+    </p>
+    <button id="closeModal">Close</button>
+  </div>
+</div>
+
 <script>
+// Step navigation with animation
 const steps = document.querySelectorAll('.step-pane');
 const username = document.getElementById('username');
 const toStep2 = document.getElementById('toStep2');
-username.addEventListener('input',()=>{toStep2.disabled=username.value.trim().length<2});
-toStep2.addEventListener('click',()=>showStep(0,1));
+const usernameError = document.getElementById('usernameError');
+const usernamePattern = /^@[A-Za-z0-9._]{3,30}$/; // Instagram username
 
+username.addEventListener('input',()=>{
+  if(usernamePattern.test(username.value.trim())){
+    toStep2.disabled = false;
+    usernameError.style.display='none';
+  } else {
+    toStep2.disabled = true;
+    usernameError.style.display='block';
+  }
+});
+
+toStep2.addEventListener('click',()=>changeStep(0,1));
+
+// Service selection
 const options = document.querySelectorAll('.option');
 const toStep3=document.getElementById('toStep3');
 const serviceField=document.getElementById('serviceField');
@@ -112,9 +155,10 @@ options.forEach(o=>o.addEventListener('click',()=>{
   serviceField.value=o.dataset.value;
   toStep3.disabled=false;
 }));
-document.getElementById('backTo1').addEventListener('click',()=>showStep(1,0));
-toStep3.addEventListener('click',()=>showStep(1,2));
+document.getElementById('backTo1').addEventListener('click',()=>changeStep(1,0));
+toStep3.addEventListener('click',()=>changeStep(1,2));
 
+// Quantity and price
 const quantity=document.getElementById('quantity');
 const toStep4=document.getElementById('toStep4');
 const priceDisplay=document.getElementById('priceDisplay');
@@ -124,23 +168,24 @@ quantity.addEventListener('input',()=>{
   priceDisplay.textContent=`Price: ₹${price}`;
   toStep4.disabled=qty<1;
 });
-document.getElementById('backTo2').addEventListener('click',()=>showStep(2,1));
-toStep4.addEventListener('click',()=>showStep(2,3));
+document.getElementById('backTo2').addEventListener('click',()=>changeStep(2,1));
+toStep4.addEventListener('click',()=>changeStep(2,3));
 
+// Redeem code validation
 const redeem=document.getElementById('redeem');
 const toStep5=document.getElementById('toStep5');
 const redeemError=document.getElementById('redeemError');
-const redeemPattern=/^[A-Z0-9]{16}$/; // 16-character alphanumeric
+const redeemPattern=/^[A-Z0-9]{16}$/;
 redeem.addEventListener('input',()=>{
   if(redeemPattern.test(redeem.value.trim())){
     redeemError.style.display='none';
     toStep5.disabled=false;
-  }else{
+  } else {
     redeemError.style.display='block';
     toStep5.disabled=true;
   }
 });
-document.getElementById('backTo3').addEventListener('click',()=>showStep(3,2));
+document.getElementById('backTo3').addEventListener('click',()=>changeStep(3,2));
 toStep5.addEventListener('click',()=>{
   const review=document.getElementById('reviewBox');
   let qty=Number(quantity.value);
@@ -150,14 +195,35 @@ toStep5.addEventListener('click',()=>{
     <div><strong>Quantity:</strong> ${quantity.value}</div>
     <div><strong>Price:</strong> ₹${price}</div>
     <div><strong>Redeem Code:</strong> ${redeem.value}</div>`;
-  showStep(3,4);
+  changeStep(3,4);
 });
-document.getElementById('backTo4').addEventListener('click',()=>showStep(4,3));
 
-function showStep(current,next){
-  steps[current].style.display='none';
-  steps[next].style.display='block';
+document.getElementById('backTo4').addEventListener('click',()=>changeStep(4,3));
+
+function changeStep(current,next){
+  steps[current].classList.remove('active');
+  steps[next].classList.add('active');
 }
+
+// Form submission - show confirmation modal
+const orderForm = document.getElementById('orderForm');
+const confirmationModal = document.getElementById('confirmationModal');
+const closeModal = document.getElementById('closeModal');
+
+orderForm.addEventListener('submit',function(e){
+  e.preventDefault();
+  orderForm.submit();
+  confirmationModal.classList.add('active');
+});
+
+closeModal.addEventListener('click',()=>{
+  confirmationModal.classList.remove('active');
+  orderForm.reset();
+  steps.forEach((s,i)=>i==0?s.classList.add('active'):s.classList.remove('active'));
+  toStep2.disabled=true; toStep3.disabled=true; toStep4.disabled=true; toStep5.disabled=true;
+  document.querySelectorAll('.option').forEach(o=>o.classList.remove('selected'));
+  priceDisplay.textContent='Price: ₹0';
+});
 </script>
 </body>
 </html>
