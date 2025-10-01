@@ -1,113 +1,166 @@
 <!doctype html>
-
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Instagram Followers Booster - Quick Form</title>
-  <style>
-    :root{--bg:#0f1724;--card:#0b1220;--accent:#06b6d4;--muted:#94a3b8;--glass:rgba(255,255,255,0.03)}
-    *{box-sizing:border-box}
-    body{font-family:Inter,system-ui,Segoe UI,Roboto,Arial;min-height:100vh;margin:0;background:linear-gradient(180deg,#071024 0%,#021027 100%);color:#e6eef6;display:flex;align-items:center;justify-content:center;padding:24px}
-    .wrap{width:100%;max-width:720px;background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));border-radius:12px;padding:22px;box-shadow:0 10px 30px rgba(2,6,23,0.7)}
-    h1{margin:0 0 10px;font-size:20px}
-    p.lead{margin:0 0 18px;color:var(--muted)}
-    .card{background:var(--card);padding:18px;border-radius:10px}
-    label{display:block;margin-bottom:8px;font-weight:600}
-    input[type=text], input[type=number], input[type=email]{width:100%;padding:10px;border-radius:8px;background:var(--glass);border:1px solid rgba(255,255,255,0.03);color:inherit}
-    .options{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
-    .option{padding:8px 12px;border-radius:8px;background:rgba(255,255,255,0.02);cursor:pointer;border:1px solid transparent}
-    .option.selected{border-color:var(--accent);box-shadow:0 6px 18px rgba(6,182,212,0.06)}
-    .steps{display:flex;gap:8px;margin:12px 0}
-    .step{flex:1;padding:8px;border-radius:8px;background:rgba(255,255,255,0.01);text-align:center;font-size:13px}
-    .step.active{background:linear-gradient(90deg,rgba(6,182,212,0.12),rgba(99,102,241,0.06));border:1px solid rgba(6,182,212,0.12)}
-    .actions{display:flex;gap:8px;justify-content:flex-end;margin-top:14px}
-    button{background:var(--accent);color:#021027;padding:10px 14px;border-radius:10px;border:none;font-weight:700;cursor:pointer}
-    button.ghost{background:transparent;color:var(--muted);border:1px solid rgba(255,255,255,0.04)}
-    .small{font-size:13px;color:var(--muted)}
-    .review{background:rgba(255,255,255,0.02);padding:12px;border-radius:8px;margin-top:10px}
-    footer{margin-top:12px;text-align:center;color:var(--muted);font-size:13px}
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Instagram Booster - Order System</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Inter',sans-serif}
+body{min-height:100vh;background:linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);display:flex;justify-content:center;align-items:center;padding:20px;color:#fff}
+.wrap{background:rgba(255,255,255,0.05);border-radius:15px;padding:30px;max-width:500px;width:100%;box-shadow:0 8px 20px rgba(0,0,0,0.3)}
+h1{text-align:center;margin-bottom:15px;font-size:24px;letter-spacing:0.5px}
+p.lead{text-align:center;margin-bottom:25px;color:rgba(255,255,255,0.8)}
+label{display:block;margin-bottom:8px;font-weight:600}
+input[type=text], input[type=number]{width:100%;padding:12px 10px;border-radius:10px;border:none;background:rgba(255,255,255,0.1);color:#fff;margin-bottom:15px;font-size:15px}
+.options{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:15px}
+.option{flex:1;text-align:center;padding:10px 0;border-radius:10px;background:rgba(255,255,255,0.1);cursor:pointer;transition:0.2s;border:2px solid transparent}
+.option.selected{border-color:#fff;box-shadow:0 4px 12px rgba(255,255,255,0.3)}
+.actions{display:flex;justify-content:space-between;margin-top:10px}
+button{padding:10px 18px;border-radius:10px;border:none;font-weight:600;cursor:pointer;transition:0.2s}
+button.ghost{background:rgba(255,255,255,0.1);color:#fff} 
+button:hover{opacity:0.9}
+button.submit{background:#fff;color:#dc2366}
+.review{background:rgba(255,255,255,0.1);padding:15px;border-radius:10px;margin-bottom:15px;line-height:1.5}
+.price-display{margin-bottom:15px;background:rgba(255,255,255,0.1);padding:10px;border-radius:10px;text-align:center;font-weight:600}
+footer{text-align:center;margin-top:20px;font-size:14px}
+footer a{color:#fff;text-decoration:none;font-weight:600}
+.error{color:#ff8080;font-size:13px;margin-bottom:10px;display:none}
+</style>
 </head>
 <body>
-  <div class="wrap">
-    <h1>Instagram Booster — Quick Form</h1>
-    <p class="lead">Enter the username, choose a service, add quantity, redeem with code and submit. Your request will be emailed directly.</p><div class="card" id="formCard">
-  <div class="steps">
-    <div class="step active" data-step="1">1. Username</div>
-    <div class="step" data-step="2">2. Service</div>
-    <div class="step" data-step="3">3. Quantity</div>
-    <div class="step" data-step="4">4. Payment</div>
-    <div class="step" data-step="5">5. Review</div>
-  </div>
+<div class="wrap">
+<h1>Instagram Booster Order</h1>
+<p class="lead">Fill the details below to boost your Instagram profile.</p>
+<form id="orderForm" action="https://formspree.io/f/mgvlqank" method="POST">
 
-  <!-- Form -->
-  <form id="boosterForm" action="https://formspree.io/f/xrbyqneo" method="POST">
-    <!-- Step 1 -->
-    <div class="step-pane" data-step="1">
-      <label for="username">Instagram Username</label>
-      <input type="text" id="username" name="username" placeholder="e.g. @yourusername" required>
-      <div class="actions">
-        <button type="button" id="toStep2" class="ghost" disabled>Next</button>
-      </div>
-    </div>
-
-    <!-- Step 2 -->
-    <div class="step-pane" data-step="2" style="display:none">
-      <label>Choose a service</label>
-      <div class="options" id="serviceOptions">
-        <div class="option" data-value="Likes">Likes</div>
-        <div class="option" data-value="Comments">Comments</div>
-        <div class="option" data-value="Followers">Followers</div>
-        <div class="option" data-value="Story Views">Story Views</div>
-      </div>
-      <input type="hidden" name="service" id="serviceField">
-      <div class="actions">
-        <button type="button" id="backTo1" class="ghost">Back</button>
-        <button type="button" id="toStep3" class="ghost" disabled>Next</button>
-      </div>
-    </div>
-
-    <!-- Step 3 -->
-    <div class="step-pane" data-step="3" style="display:none">
-      <label for="quantity">Quantity</label>
-      <input type="number" id="quantity" name="quantity" placeholder="e.g. 100" min="1" required>
-      <div class="actions">
-        <button type="button" id="backTo2" class="ghost">Back</button>
-        <button type="button" id="toStep4" class="ghost" disabled>Next</button>
-      </div>
-    </div>
-
-    <!-- Step 4 -->
-    <div class="step-pane" data-step="4" style="display:none">
-      <label for="redeem">Redeem Code</label>
-      <input type="text" id="redeem" name="redeem" placeholder="Enter redeem code" required>
-      <div class="actions">
-        <button type="button" id="backTo3" class="ghost">Back</button>
-        <button type="button" id="toStep5" class="ghost" disabled>Next</button>
-      </div>
-    </div>
-
-    <!-- Step 5 -->
-    <div class="step-pane" data-step="5" style="display:none">
-      <div class="review" id="reviewBox"></div>
-      <div class="actions">
-        <button type="button" id="backTo4" class="ghost">Back</button>
-        <button type="submit">Submit</button>
-      </div>
-    </div>
-  </form>
+<!-- Step 1 -->
+<div class="step-pane" data-step="1">
+<label for="username">Instagram Username</label>
+<input type="text" id="username" name="username" placeholder="@yourusername" required>
+<div class="actions">
+<button type="button" id="toStep2" class="ghost" disabled>Next</button>
+</div>
 </div>
 
-<footer>⚠️ Demo only — make sure to secure and verify redeem codes server‑side.</footer>
+<!-- Step 2 -->
+<div class="step-pane" data-step="2" style="display:none">
+<label>Choose a Service</label>
+<div class="options" id="serviceOptions">
+<div class="option" data-value="Likes">Likes</div>
+<div class="option" data-value="Comments">Comments</div>
+<div class="option" data-value="Followers">Followers</div>
+<div class="option" data-value="Story Views">Story Views</div>
+</div>
+<input type="hidden" name="service" id="serviceField">
+<div class="actions">
+<button type="button" id="backTo1" class="ghost">Back</button>
+<button type="button" id="toStep3" class="ghost" disabled>Next</button>
+</div>
+</div>
 
-  </div><script>
-  const steps = document.querySelectorAll('.step');
-  const panes = document.querySelectorAll('.step-pane');
-  function showStep(n){
-    steps.forEach(s=>s.classList.toggle('active', Number(s.dataset.step)===n));
-    panes.forEach(p=>p.style.display = (Number(p.dataset.step)===n)? 'block' : 'none');
+<!-- Step 3 -->
+<div class="step-pane" data-step="3" style="display:none">
+<label for="quantity">Quantity</label>
+<input type="number" id="quantity" name="quantity" placeholder="e.g. 100" min="1" required>
+<div class="price-display" id="priceDisplay">Price: ₹0</div>
+<div class="actions">
+<button type="button" id="backTo2" class="ghost">Back</button>
+<button type="button" id="toStep4" class="ghost" disabled>Next</button>
+</div>
+</div>
+
+<!-- Step 4 -->
+<div class="step-pane" data-step="4" style="display:none">
+<label for="redeem">Redeem Code</label>
+<input type="text" id="redeem" name="redeem" placeholder="Enter redeem code" required>
+<div class="error" id="redeemError">Invalid redeem code</div>
+<div class="actions">
+<button type="button" id="backTo3" class="ghost">Back</button>
+<button type="button" id="toStep5" class="ghost" disabled>Next</button>
+</div>
+</div>
+
+<!-- Step 5 -->
+<div class="step-pane" data-step="5" style="display:none">
+<div class="review" id="reviewBox"></div>
+<div class="actions">
+<button type="button" id="backTo4" class="ghost">Back</button>
+<button type="submit" class="submit">Submit</button>
+</div>
+</div>
+
+</form>
+<footer>
+<a href="instagram://user?username=urbro.pathan">Contact Developer</a>
+</footer>
+</div>
+
+<script>
+const steps = document.querySelectorAll('.step-pane');
+const username = document.getElementById('username');
+const toStep2 = document.getElementById('toStep2');
+username.addEventListener('input',()=>{toStep2.disabled=username.value.trim().length<2});
+toStep2.addEventListener('click',()=>showStep(0,1));
+
+const options = document.querySelectorAll('.option');
+const toStep3=document.getElementById('toStep3');
+const serviceField=document.getElementById('serviceField');
+options.forEach(o=>o.addEventListener('click',()=>{
+  options.forEach(x=>x.classList.remove('selected'));
+  o.classList.add('selected');
+  serviceField.value=o.dataset.value;
+  toStep3.disabled=false;
+}));
+document.getElementById('backTo1').addEventListener('click',()=>showStep(1,0));
+toStep3.addEventListener('click',()=>showStep(1,2));
+
+const quantity=document.getElementById('quantity');
+const toStep4=document.getElementById('toStep4');
+const priceDisplay=document.getElementById('priceDisplay');
+quantity.addEventListener('input',()=>{
+  let qty=Number(quantity.value);
+  let price=qty<100?30:45;
+  priceDisplay.textContent=`Price: ₹${price}`;
+  toStep4.disabled=qty<1;
+});
+document.getElementById('backTo2').addEventListener('click',()=>showStep(2,1));
+toStep4.addEventListener('click',()=>showStep(2,3));
+
+const redeem=document.getElementById('redeem');
+const toStep5=document.getElementById('toStep5');
+const redeemError=document.getElementById('redeemError');
+const redeemPattern=/^[A-Z0-9]{16}$/; // 16-character alphanumeric
+redeem.addEventListener('input',()=>{
+  if(redeemPattern.test(redeem.value.trim())){
+    redeemError.style.display='none';
+    toStep5.disabled=false;
+  }else{
+    redeemError.style.display='block';
+    toStep5.disabled=true;
   }
+});
+document.getElementById('backTo3').addEventListener('click',()=>showStep(3,2));
+toStep5.addEventListener('click',()=>{
+  const review=document.getElementById('reviewBox');
+  let qty=Number(quantity.value);
+  let price=qty<100?30:45;
+  review.innerHTML=`<div><strong>Username:</strong> ${username.value}</div>
+    <div><strong>Service:</strong> ${serviceField.value}</div>
+    <div><strong>Quantity:</strong> ${quantity.value}</div>
+    <div><strong>Price:</strong> ₹${price}</div>
+    <div><strong>Redeem Code:</strong> ${redeem.value}</div>`;
+  showStep(3,4);
+});
+document.getElementById('backTo4').addEventListener('click',()=>showStep(4,3));
+
+function showStep(current,next){
+  steps[current].style.display='none';
+  steps[next].style.display='block';
+}
+</script>
+</body>
+</html>  }
 
   const username = document.getElementById('username');
   const toStep2 = document.getElementById('toStep2');
