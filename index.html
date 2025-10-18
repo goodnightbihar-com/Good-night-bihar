@@ -223,5 +223,88 @@ closeModal.addEventListener('click',()=>{
   priceDisplay.textContent='Price: ₹0';
 });
 </script>
+  <!-- Notice Circle Button -->
+<div id="noticeCircle" style="
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: #dc2366;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24px;
+  cursor: pointer;
+  z-index: 2001;
+">📢</div>
+
+<!-- Announcement Section -->
+<div class="announcement-section" id="announcementSection">
+  <h2>📢 Announcements</h2>
+  <ul class="announcement-list" id="announcementList"></ul>
+</div>
+
+<style>
+.announcement-section {
+  position: fixed;
+  bottom: 80px; /* above notice circle */
+  right: 20px;
+  background: rgba(0,0,0,0.7);
+  color: #fff;
+  padding: 15px;
+  border-radius: 15px;
+  width: 300px;
+  max-height: 400px;
+  overflow-y: auto;
+  display: none; /* hidden by default */
+  z-index: 2000;
+}
+.announcement-section h2 {
+  margin-bottom: 10px;
+  font-size: 18px;
+  text-align: center;
+}
+.announcement-list li {
+  margin-bottom: 10px;
+  font-size: 14px;
+  line-height: 1.4;
+}
+</style>
+
+<script>
+// Announcement messages
+const announcementSection = document.getElementById('announcementSection');
+const announcementList = document.getElementById('announcementList');
+
+const announcements = [
+  `💥 Full Paisa Vasool Sale Is Live!`,
+  `🎉 Limited Time Offer — Valid Till 28th October Only`,
+  `500 Followers - ₹150`,
+  `700 Followers - ₹250`,
+  `1200 Followers - ₹384`,
+  `1500 Followers - ₹405`,
+  `2500 Followers - ₹474`,
+  `3500 Followers - ₹509`,
+  `⚠️ After 28th October, prices may increase by 75% or more.`,
+  `🔥 Note: Only Real Followers are available in this offer.`,
+  `🛒 Don’t miss out — Full Paisa Vasool Sale is live only on 🌐 Official Website.`
+];
+
+// Append announcements to list
+announcements.forEach(msg => {
+  const li = document.createElement('li');
+  li.textContent = msg;
+  announcementList.appendChild(li);
+});
+
+// Toggle visibility on notice circle click
+const noticeCircle = document.getElementById('noticeCircle');
+noticeCircle.addEventListener('click', () => {
+  announcementSection.style.display = (announcementSection.style.display === 'none') ? 'block' : 'none';
+});
+</script>
 </body>
   </html>
