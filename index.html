@@ -224,87 +224,106 @@ closeModal.addEventListener('click',()=>{
 });
 </script>
   <!-- Notice Circle Button -->
-<div id="noticeCircle" style="
+<!-- Announcement Section Start -->
+<div id="noticeCircle">📢</div>
+
+<div class="announcement-section" id="announcementSection">
+  <button id="closeAnnouncement">X</button>
+  <h2>📢 Announcements</h2>
+  <ul class="announcement-list">
+    <li>💥 Full Paisa Vasool Sale Is Live!</li>
+    <li>🎉 Limited Time Offer — Valid Till 28th October Only</li>
+    <li>500 Followers - ₹150</li>
+    <li>700 Followers - ₹250</li>
+    <li>1200 Followers - ₹384</li>
+    <li>1500 Followers - ₹405</li>
+    <li>2500 Followers - ₹474</li>
+    <li>3500 Followers - ₹509</li>
+    <li>⚠️ After 28th October, prices may increase by 75% or more.</li>
+    <li>🔥 Only Real Followers are available in this offer.</li>
+    <li>🛒 Don’t miss out — Full Paisa Vasool Sale is live only on 🌐</li>
+  </ul>
+</div>
+
+<style>
+#noticeCircle {
   position: fixed;
   bottom: 20px;
   right: 20px;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
   background: #dc2366;
   color: #fff;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 24px;
   cursor: pointer;
-  z-index: 2001;
-">📢</div>
+  z-index: 1001;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
 
-<!-- Announcement Section -->
-<div class="announcement-section" id="announcementSection">
-  <h2>📢 Announcements</h2>
-  <ul class="announcement-list" id="announcementList"></ul>
-</div>
-
-<style>
 .announcement-section {
   position: fixed;
-  bottom: 80px; /* above notice circle */
+  bottom: 80px;
   right: 20px;
-  background: rgba(0,0,0,0.7);
-  color: #fff;
-  padding: 15px;
-  border-radius: 15px;
+  background: #fff;
+  color: #000;
   width: 300px;
   max-height: 400px;
   overflow-y: auto;
-  display: none; /* hidden by default */
-  z-index: 2000;
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+  display: none;
+  z-index: 1000;
 }
+
 .announcement-section h2 {
   margin-bottom: 10px;
-  font-size: 18px;
-  text-align: center;
+  color: #dc2366;
 }
+
+.announcement-list {
+  list-style: none;
+  padding-left: 0;
+}
+
 .announcement-list li {
-  margin-bottom: 10px;
+  margin-bottom: 8px;
   font-size: 14px;
-  line-height: 1.4;
+}
+
+#closeAnnouncement {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: red;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  font-weight: bold;
 }
 </style>
 
 <script>
-// Announcement messages
-const announcementSection = document.getElementById('announcementSection');
-const announcementList = document.getElementById('announcementList');
-
-const announcements = [
-  `💥 Full Paisa Vasool Sale Is Live!`,
-  `🎉 Limited Time Offer — Valid Till 28th October Only`,
-  `500 Followers - ₹150`,
-  `700 Followers - ₹250`,
-  `1200 Followers - ₹384`,
-  `1500 Followers - ₹405`,
-  `2500 Followers - ₹474`,
-  `3500 Followers - ₹509`,
-  `⚠️ After 28th October, prices may increase by 75% or more.`,
-  `🔥 Note: Only Real Followers are available in this offer.`,
-  `🛒 Don’t miss out — Full Paisa Vasool Sale is live only on 🌐 Official Website.`
-];
-
-// Append announcements to list
-announcements.forEach(msg => {
-  const li = document.createElement('li');
-  li.textContent = msg;
-  announcementList.appendChild(li);
-});
-
-// Toggle visibility on notice circle click
 const noticeCircle = document.getElementById('noticeCircle');
+const announcementSection = document.getElementById('announcementSection');
+const closeAnnouncement = document.getElementById('closeAnnouncement');
+
 noticeCircle.addEventListener('click', () => {
-  announcementSection.style.display = (announcementSection.style.display === 'none') ? 'block' : 'none';
+  announcementSection.style.display = 'block';
 });
+
+closeAnnouncement.addEventListener('click', () => {
+  announcementSection.style.display = 'none';
+});
+</script>
+<!-- Announcement Section End -->
 </script>
 </body>
   </html>
