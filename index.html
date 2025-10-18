@@ -24,20 +24,20 @@ button:hover{opacity:0.9;transform:scale(1.05)}
 button.submit{background:#fff;color:#dc2366}
 .review{background:rgba(255,255,255,0.1);padding:15px;border-radius:10px;margin-bottom:15px;line-height:1.5;transition:0.3s}
 .price-display{margin-bottom:15px;background:rgba(255,255,255,0.1);padding:10px;border-radius:10px;text-align:center;font-weight:600;transition:0.3s}
+.notice-popup{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);display:flex;justify-content:center;align-items:center;z-index:1000}
+.notice-content{background:#fff;color:#000;padding:25px 30px;border-radius:15px;text-align:center;max-width:400px;width:90%;position:relative}
+.notice-content h2{margin-bottom:15px;color:#dc2366}
+.notice-content button{position:absolute;top:10px;right:10px;background:red;color:#fff;border:none;border-radius:50%;width:28px;height:28px;font-weight:bold;cursor:pointer}
 footer{text-align:center;margin-top:20px;font-size:14px}
 footer a{color:#fff;text-decoration:none;font-weight:600}
 .error{color:#ff8080;font-size:13px;margin-bottom:10px;display:none}
-
-/* Step animation */
 .step-pane{position:absolute;top:0;left:0;width:100%;opacity:0;transform:translateX(50px);transition:0.5s;pointer-events:none;}
 .step-pane.active{opacity:1;transform:translateX(0);pointer-events:auto;position:relative}
-
-/* Modal styles */
-#confirmationModal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);display:flex;justify-content:center;align-items:center;opacity:0;visibility:hidden;transition:0.3s;}
+#confirmationModal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);display:flex;justify-content:center;align-items:center;opacity:0;visibility:hidden;transition:0.3s;z-index:1000;}
 #confirmationModal.active{opacity:1;visibility:visible;}
 .modal-content{background:#fff;color:#000;padding:25px 30px;border-radius:15px;text-align:center;max-width:400px;width:90%;transform:scale(0.8);transition:0.3s}
 #confirmationModal.active .modal-content{transform:scale(1)}
-.modal-content h2{margin-bottom:15px}
+.modal-content h2{margin-bottom:15px;color:#dc2366}
 .modal-content p{margin-top:10px;font-size:14px;color:#333}
 .modal-content a{color:#dc2366;text-decoration:underline}
 .modal-content button{margin-top:15px;background:#dc2366;color:#fff;border:none;padding:10px 18px;border-radius:10px;cursor:pointer;font-weight:600;transition:0.2s}
@@ -45,6 +45,18 @@ footer a{color:#fff;text-decoration:none;font-weight:600}
 </style>
 </head>
 <body>
+
+<!-- Notice Popup -->
+<div class="notice-popup" id="startNotice">
+  <div class="notice-content">
+    <button id="closeNotice">X</button>
+    <h2>⚠️ Important Notice</h2>
+    <p>After 28th October, prices may increase by 75% or more.</p>
+    <p>🔥 Only Real Followers are available in this offer.</p>
+    <p>🛒 Don’t miss out — Full Paisa Vasool Sale is live!</p>
+  </div>
+</div>
+
 <div class="wrap">
 <h1>Instagram Booster Order</h1>
 <p class="lead">Fill the details below to boost your Instagram profile.</p>
@@ -62,14 +74,18 @@ footer a{color:#fff;text-decoration:none;font-weight:600}
 
 <!-- Step 2 -->
 <div class="step-pane" data-step="2">
-<label>Choose a Service</label>
+<label>Choose Quantity Package</label>
 <div class="options" id="serviceOptions">
-<div class="option" data-value="Likes">Likes</div>
-<div class="option" data-value="Comments">Comments</div>
-<div class="option" data-value="Followers">Followers</div>
-<div class="option" data-value="Story Views">Story Views</div>
+<div class="option" data-value="500 Followers" data-price="150">500 Followers - ₹150</div>
+<div class="option" data-value="700 Followers" data-price="250">700 Followers - ₹250</div>
+<div class="option" data-value="1200 Followers" data-price="384">1200 Followers - ₹384</div>
+<div class="option" data-value="1500 Followers" data-price="405">1500 Followers - ₹405</div>
+<div class="option" data-value="2500 Followers" data-price="474">2500 Followers - ₹474</div>
+<div class="option" data-value="3500 Followers" data-price="509">3500 Followers - ₹509</div>
 </div>
-<input type="hidden" name="service" id="serviceField">
+<input type="hidden" name="package" id="packageField">
+<input type="hidden" name="price" id="priceField">
+<div class="price-display" id="priceDisplay">Price: ₹0</div>
 <div class="actions">
 <button type="button" id="backTo1" class="ghost">Back</button>
 <button type="button" id="toStep3" class="ghost" disabled>Next</button>
@@ -78,38 +94,30 @@ footer a{color:#fff;text-decoration:none;font-weight:600}
 
 <!-- Step 3 -->
 <div class="step-pane" data-step="3">
-<label for="quantity">Quantity</label>
-<input type="number" id="quantity" name="quantity" placeholder="e.g. 100" min="1" required>
-<div class="price-display" id="priceDisplay">Price: ₹0</div>
+<label for="redeem">Redeem Code</label>
+<input type="text" id="redeem" name="redeem" placeholder="Enter redeem code (16 chars)" required>
+<div class="error" id="redeemError">Invalid redeem code</div>
 <div class="actions">
 <button type="button" id="backTo2" class="ghost">Back</button>
 <button type="button" id="toStep4" class="ghost" disabled>Next</button>
 </div>
 </div>
 
-<!-- Step 4 -->
+<!-- Step 4 - Review -->
 <div class="step-pane" data-step="4">
-<label for="redeem">Redeem Code</label>
-<input type="text" id="redeem" name="redeem" placeholder="Enter redeem code" required>
-<div class="error" id="redeemError">Invalid redeem code</div>
+<div class="review" id="reviewBox"></div>
+<p style="color:#ffdd57;font-weight:600;margin-top:10px;">
+⚠️ We will verify your redeem code, and only after verification, the followers will be sent.
+</p>
 <div class="actions">
 <button type="button" id="backTo3" class="ghost">Back</button>
-<button type="button" id="toStep5" class="ghost" disabled>Next</button>
-</div>
-</div>
-
-<!-- Step 5 -->
-<div class="step-pane" data-step="5">
-<div class="review" id="reviewBox"></div>
-<div class="actions">
-<button type="button" id="backTo4" class="ghost">Back</button>
 <button type="submit" class="submit">Submit</button>
 </div>
 </div>
 
 </form>
 <footer>
-<a href="instagram://user?username=urbro.pathan">Contact Developer</a>
+<a href="https://www.instagram.com/demonnnnngod/" target="_blank">Contact Developer</a>
 </footer>
 </div>
 
@@ -119,19 +127,24 @@ footer a{color:#fff;text-decoration:none;font-weight:600}
     <h2>Order Placed Successfully!</h2>
     <p>Thank you for your order. We will process it shortly.</p>
     <p><strong>Note:</strong> If you do not receive your service within 30 minutes, please 
-      <a href="https://www.instagram.com/urbro.pathan" target="_blank">click here</a> to DM the developer on Instagram.
+      <a href="https://www.instagram.com/demonnnnngod/" target="_blank">click here</a> to DM the developer on Instagram.
     </p>
+    <p style="color:#dc2366;font-weight:600;">⚠️ We will verify your redeem after that followers will be sent.</p>
     <button id="closeModal">Close</button>
   </div>
 </div>
 
 <script>
-// Step navigation with animation
+// Notice popup
+const startNotice=document.getElementById('startNotice');
+document.getElementById('closeNotice').onclick=()=>startNotice.style.display='none';
+
+// Steps
 const steps = document.querySelectorAll('.step-pane');
 const username = document.getElementById('username');
 const toStep2 = document.getElementById('toStep2');
 const usernameError = document.getElementById('usernameError');
-const usernamePattern = /^@[A-Za-z0-9._]{3,30}$/; // Instagram username
+const usernamePattern = /^@[A-Za-z0-9._]{3,30}$/;
 
 username.addEventListener('input',()=>{
   if(usernamePattern.test(username.value.trim())){
@@ -142,70 +155,55 @@ username.addEventListener('input',()=>{
     usernameError.style.display='block';
   }
 });
-
 toStep2.addEventListener('click',()=>changeStep(0,1));
 
-// Service selection
+// Package selection
 const options = document.querySelectorAll('.option');
-const toStep3=document.getElementById('toStep3');
-const serviceField=document.getElementById('serviceField');
+const toStep3 = document.getElementById('toStep3');
+const packageField = document.getElementById('packageField');
+const priceField = document.getElementById('priceField');
+const priceDisplay = document.getElementById('priceDisplay');
+
 options.forEach(o=>o.addEventListener('click',()=>{
   options.forEach(x=>x.classList.remove('selected'));
   o.classList.add('selected');
-  serviceField.value=o.dataset.value;
+  packageField.value=o.dataset.value;
+  priceField.value=o.dataset.price;
+  priceDisplay.textContent=`Price: ₹${o.dataset.price}`;
   toStep3.disabled=false;
 }));
 document.getElementById('backTo1').addEventListener('click',()=>changeStep(1,0));
 toStep3.addEventListener('click',()=>changeStep(1,2));
-
-// Quantity and price
-const quantity=document.getElementById('quantity');
-const toStep4=document.getElementById('toStep4');
-const priceDisplay=document.getElementById('priceDisplay');
-quantity.addEventListener('input',()=>{
-  let qty=Number(quantity.value);
-  let price=qty<100?30:45;
-  priceDisplay.textContent=`Price: ₹${price}`;
-  toStep4.disabled=qty<1;
-});
-document.getElementById('backTo2').addEventListener('click',()=>changeStep(2,1));
-toStep4.addEventListener('click',()=>changeStep(2,3));
-
-// Redeem code validation
-const redeem=document.getElementById('redeem');
-const toStep5=document.getElementById('toStep5');
-const redeemError=document.getElementById('redeemError');
-const redeemPattern=/^[A-Z0-9]{16}$/;
+// Redeem code
+const redeemPattern = /^[A-Za-z0-9]{12,16}$/; // accept 12 to 16 chars
 redeem.addEventListener('input',()=>{
   if(redeemPattern.test(redeem.value.trim())){
     redeemError.style.display='none';
-    toStep5.disabled=false;
+    toStep4.disabled=false;
   } else {
     redeemError.style.display='block';
-    toStep5.disabled=true;
+    toStep4.disabled=true;
   }
 });
-document.getElementById('backTo3').addEventListener('click',()=>changeStep(3,2));
-toStep5.addEventListener('click',()=>{
+
+document.getElementById('backTo2').addEventListener('click',()=>changeStep(2,1));
+toStep4.addEventListener('click',()=>{
   const review=document.getElementById('reviewBox');
-  let qty=Number(quantity.value);
-  let price=qty<100?30:45;
   review.innerHTML=`<div><strong>Username:</strong> ${username.value}</div>
-    <div><strong>Service:</strong> ${serviceField.value}</div>
-    <div><strong>Quantity:</strong> ${quantity.value}</div>
-    <div><strong>Price:</strong> ₹${price}</div>
+    <div><strong>Package:</strong> ${packageField.value}</div>
+    <div><strong>Price:</strong> ₹${priceField.value}</div>
     <div><strong>Redeem Code:</strong> ${redeem.value}</div>`;
-  changeStep(3,4);
+  changeStep(2,3);
 });
 
-document.getElementById('backTo4').addEventListener('click',()=>changeStep(4,3));
+document.getElementById('backTo3').addEventListener('click',()=>changeStep(3,1));
 
 function changeStep(current,next){
   steps[current].classList.remove('active');
   steps[next].classList.add('active');
 }
 
-// Form submission - show confirmation modal
+// Form submission
 const orderForm = document.getElementById('orderForm');
 const confirmationModal = document.getElementById('confirmationModal');
 const closeModal = document.getElementById('closeModal');
@@ -220,10 +218,10 @@ closeModal.addEventListener('click',()=>{
   confirmationModal.classList.remove('active');
   orderForm.reset();
   steps.forEach((s,i)=>i==0?s.classList.add('active'):s.classList.remove('active'));
-  toStep2.disabled=true; toStep3.disabled=true; toStep4.disabled=true; toStep5.disabled=true;
-  document.querySelectorAll('.option').forEach(o=>o.classList.remove('selected'));
+  toStep2.disabled=true; toStep3.disabled=true; toStep4.disabled=true;
+  options.forEach(o=>o.classList.remove('selected'));
   priceDisplay.textContent='Price: ₹0';
 });
 </script>
 </body>
-</html>
+  </html>
