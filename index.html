@@ -1,58 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <!-- Google Sign-in Overlay -->
-<div id="loginOverlay" style="
-  position:fixed;
-  top:0;left:0;width:100%;height:100%;
-  background:rgba(0,0,0,0.8);
-  backdrop-filter:blur(10px);
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  flex-direction:column;
-  z-index:2000;
-  color:white;
-  text-align:center;
-">
-  <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
-       alt="Google" width="60" height="60" style="margin-bottom:20px;">
-  <h2 style="margin-bottom:10px;">Sign in with Google to Continue</h2>
-  <p style="margin-bottom:20px;">Only verified users can access this website.</p>
-  <button id="googleLoginBtn" style="
-    padding:12px 20px;
-    background:#fff;
-    color:#000;
-    border:none;
-    border-radius:10px;
-    cursor:pointer;
-    font-weight:600;
-    font-size:16px;
-    display:flex;
-    align-items:center;
-    gap:8px;
-  ">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" 
-         alt="G" width="20" height="20">
-    Continue with Google
-  </button>
-</div>
-
-<!-- Greeting in top left -->
-<div id="greeting" style="
-  position:fixed;
-  top:15px;
-  left:15px;
-  color:white;
-  font-weight:600;
-  background:rgba(0,0,0,0.4);
-  padding:8px 14px;
-  border-radius:12px;
-  z-index:1500;
-  display:none;
-">
-Hi, User
-</div>
+  
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Purchase IG followers- Order 100% real followers</title>
@@ -396,80 +345,7 @@ closeModal.addEventListener('click',()=>{
   </div>
 </div>
 
-<script>
-// Function to open overlay with fade-in
-function openOverlay(overlayId) {
-  const overlay = document.getElementById(overlayId);
-  overlay.style.display = 'flex';
-  setTimeout(()=>overlay.style.opacity = '1', 50);
-}
 
-// Function to close overlay with fade-out
-function closeOverlay(overlayId) {
-  const overlay = document.getElementById(overlayId);
-  overlay.style.opacity = '0';
-  setTimeout(()=>overlay.style.display='none', 400);
-}
-
-// Event listeners
-document.getElementById('noticeCircle1').addEventListener('click', ()=> openOverlay('announcementOverlay1'));
-document.getElementById('closeOverlay1').addEventListener('click', ()=> closeOverlay('announcementOverlay1'));
-
-document.getElementById('noticeCircle2').addEventListener('click', ()=> openOverlay('announcementOverlay2'));
-document.getElementById('closeOverlay2').addEventListener('click', ()=> closeOverlay('announcementOverlay2'));
-</script>
-</script>
-  <script type="module">
-  // Import Firebase
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-  import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } 
-    from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-
-  // 🔥 Your Firebase Config (Aariz)
-  const firebaseConfig = {
-    apiKey: "AIzaSyC7CNxk3-2H2WqO-rh9GxJQwhiWqCQ-5dQ",
-    authDomain: "infogyaan-auth.firebaseapp.com",
-    projectId: "infogyaan-auth",
-    storageBucket: "infogyaan-auth.appspot.com",
-    messagingSenderId: "582674301020",
-    appId: "1:582674301020:web:fe2df5a46b4d2a52d3a1a7"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const provider = new GoogleAuthProvider();
-
-  const overlay = document.getElementById('loginOverlay');
-  const greeting = document.getElementById('greeting');
-  const loginBtn = document.getElementById('googleLoginBtn');
-
-  // Login button click
-  loginBtn.addEventListener('click', async () => {
-    try {
-      const result = await signInWithPopup(auth, provider);
-      const user = result.user;
-      showGreeting(user);
-    } catch (error) {
-      alert("Login failed! Please try again.");
-      console.error(error);
-    }
-  });
-
-  // Check if user already logged in
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      showGreeting(user);
-    } else {
-      overlay.style.display = 'flex';
-    }
-  });
-
-  // Show user name greeting
-  function showGreeting(user) {
-    overlay.style.display = 'none';
-    greeting.style.display = 'block';
-    greeting.textContent = `Hi, ${user.displayName || "User"}`;
-  }
   </script>
 </body>
   </html>
