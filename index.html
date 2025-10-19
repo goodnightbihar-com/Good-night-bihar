@@ -226,8 +226,7 @@ closeModal.addEventListener('click',()=>{
   priceDisplay.textContent='Price: ₹0';
 });
 </script>
-  <!-- Notice Circle Button -->
-<!<!-- Announcement Circle 1 -->
+  <!-- Announcement Circle Buttons -->
 <div id="noticeCircle1" style="
   position: fixed;
   bottom: 20px;
@@ -242,7 +241,6 @@ closeModal.addEventListener('click',()=>{
   box-shadow: 0 4px 12px rgba(0,0,0,0.3);
 ">📢</div>
 
-<!-- Announcement Circle 2 -->
 <div id="noticeCircle2" style="
   position: fixed;
   bottom: 20px;
@@ -257,7 +255,7 @@ closeModal.addEventListener('click',()=>{
   box-shadow: 0 4px 12px rgba(0,0,0,0.3);
 ">💼</div>
 
-<!-- Announcement Section 1 (Sale) -->
+<!-- Announcement Overlay 1 (Sale) -->
 <div class="announcement-overlay" id="announcementOverlay1" style="
   position: fixed;
   top:0; left:0; width:100%; height:100%;
@@ -304,7 +302,7 @@ closeModal.addEventListener('click',()=>{
   </div>
 </div>
 
-<!-- Announcement Section 2 (Vacancy) -->
+<!-- Announcement Overlay 2 (Vacancy) -->
 <div class="announcement-overlay" id="announcementOverlay2" style="
   position: fixed;
   top:0; left:0; width:100%; height:100%;
@@ -337,12 +335,35 @@ closeModal.addEventListener('click',()=>{
     <div style="font-weight:700; font-size:16px; margin-bottom:10px;">📣 Announcements</div>
     <h2>Vacancy Announcement</h2>
     <ul style="list-style:none; padding-left:0; line-height:1.5; font-size:14px;">
-      <li>📌 For any bachelor part-time work</li>
-      <li>💰 Only refer our website. If anyone purchases of any amount, 5% will be given to you.</li>
-      <li>📩 For applying: Message our executive. They will create your referral code, and whenever someone uses it, you will automatically get 5%.</li>
-      <li>⚠️ You are responsible for customer behavior. For any loss, we take responsibility.</li>
+      <li>NO MESSAGE/ANNOUNCEMENT/VACANCY YET</li>
+      <li>NO MESSAGE/ANNOUNCEMENT/VACANCY YET.</li>
+      <li>NO MESSAGE/ANNOUNCEMENT/VACANCY YET.</li>
+      <li>NO MESSAGE/ANNOUNCEMENT/VACANCY YET</li>
     </ul>
   </div>
+</div>
+
+<script>
+  // Open overlay
+  function openOverlay(id){
+    const overlay = document.getElementById(id);
+    overlay.style.display='flex';
+    setTimeout(()=>overlay.style.opacity='1',50);
+  }
+
+  // Close overlay
+  function closeOverlay(id){
+    const overlay = document.getElementById(id);
+    overlay.style.opacity='0';
+    setTimeout(()=>overlay.style.display='none',400);
+  }
+
+  document.getElementById('noticeCircle1').addEventListener('click',()=>openOverlay('announcementOverlay1'));
+  document.getElementById('closeOverlay1').addEventListener('click',()=>closeOverlay('announcementOverlay1'));
+
+  document.getElementById('noticeCircle2').addEventListener('click',()=>openOverlay('announcementOverlay2'));
+  document.getElementById('closeOverlay2').addEventListener('click',()=>closeOverlay('announcementOverlay2'));
+</script>
 </div>
 
 
