@@ -1,5 +1,57 @@
 <!doctype html>
 <html>
+  <!-- 🔹 Hamburger Icon -->
+<div id="hamburger" style="
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+  z-index: 1002;
+  color: #fff;
+  background: #111;
+  padding: 10px 14px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+">
+  ☰
+</div>
+
+<!-- 🔹 Sidebar Menu -->
+<div id="sidebar" style="
+  position: fixed;
+  top: 0;
+  left: -250px;
+  width: 200px;
+  height: 100%;
+  background: rgba(0,0,0,0.9);
+  color: #fff;
+  padding-top: 60px;
+  transition: 0.3s;
+  z-index: 1001;
+  box-shadow: 4px 0 10px rgba(0,0,0,0.4);
+">
+  <div style="padding: 15px; border-bottom: 1px solid rgba(255,255,255,0.2); cursor:pointer;">
+    🔄 Refil
+  </div>
+</div>
+
+<script>
+const hamburger = document.getElementById('hamburger');
+const sidebar = document.getElementById('sidebar');
+let open = false;
+
+hamburger.addEventListener('click', () => {
+  if(!open){
+    sidebar.style.left = '0';
+    open = true;
+  } else {
+    sidebar.style.left = '-250px';
+    open = false;
+  }
+});
+</script>
   <body>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Purchase IG followers- Order 100% real followers</title>
