@@ -106,54 +106,7 @@
   // 🔥 Firebase Config
   const firebaseConfig = {
     apiKey: "AIzaSyDFPMf8HLMpS6DbZkdCR6T7GAm5sfz-TOw",
-    authDomain: "urbrokhan-f631c.firebaseapp.com",
-    databaseURL: "https://urbrokhan-f631c-default-rtdb.asia-southeast1.firebasedatabase.app",
-    projectId: "urbrokhan-f631c",
-    storageBucket: "urbrokhan-f631c.firebasestorage.app",
-    messagingSenderId: "533086015351",
-    appId: "1:533086015351:web:a12328fbc4906e4f5c9b72",
-    measurementId: "G-TGT66KJV02"
-  };
 
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const provider = new GoogleAuthProvider();
-
-  const overlay = document.getElementById('loginOverlay');
-  const greeting = document.getElementById('greeting');
-  const loginBtn = document.getElementById('googleLoginBtn');
-  const pageContent = document.getElementById('pageContent');
-
-  loginBtn.addEventListener('click', async () => {
-    try {
-      const result = await signInWithPopup(auth, provider);
-      const user = result.user;
-      showGreeting(user);
-    } catch (error) {
-      alert("Login failed! Try again.");
-      console.error(error);
-    }
-  });
-
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      showGreeting(user);
-    } else {
-      overlay.style.display = 'flex';
-      pageContent.style.filter = 'blur(10px)';
-    }
-  });
-
-  function showGreeting(user) {
-    overlay.style.display = 'none';
-    greeting.style.display = 'block';
-    greeting.textContent = `Hi, ${user.displayName || "User"}`;
-    pageContent.style.filter = 'none';
-  }
-</script>
-
-</body>
-</html>
   <body>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
