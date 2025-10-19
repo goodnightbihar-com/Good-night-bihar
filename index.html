@@ -419,5 +419,57 @@ document.getElementById('noticeCircle2').addEventListener('click', ()=> openOver
 document.getElementById('closeOverlay2').addEventListener('click', ()=> closeOverlay('announcementOverlay2'));
 </script>
 </script>
+  <script type="module">
+  // Import Firebase
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } 
+    from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+  // 🔥 Your Firebase Config (Aariz)
+  const firebaseConfig = {
+    apiKey: "AIzaSyC7CNxk3-2H2WqO-rh9GxJQwhiWqCQ-5dQ",
+    authDomain: "infogyaan-auth.firebaseapp.com",
+    projectId: "infogyaan-auth",
+    storageBucket: "infogyaan-auth.appspot.com",
+    messagingSenderId: "582674301020",
+    appId: "1:582674301020:web:fe2df5a46b4d2a52d3a1a7"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const provider = new GoogleAuthProvider();
+
+  const overlay = document.getElementById('loginOverlay');
+  const greeting = document.getElementById('greeting');
+  const loginBtn = document.getElementById('googleLoginBtn');
+
+  // Login button click
+  loginBtn.addEventListener('click', async () => {
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+      showGreeting(user);
+    } catch (error) {
+      alert("Login failed! Please try again.");
+      console.error(error);
+    }
+  });
+
+  // Check if user already logged in
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      showGreeting(user);
+    } else {
+      overlay.style.display = 'flex';
+    }
+  });
+
+  // Show user name greeting
+  function showGreeting(user) {
+    overlay.style.display = 'none';
+    greeting.style.display = 'block';
+    greeting.textContent = `Hi, ${user.displayName || "User"}`;
+  }
+  </script>
 </body>
   </html>
