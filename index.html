@@ -1,159 +1,16 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Video Upload | UR BRO KHAN</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-  <style>
-    :root{
-      --bg: #0f172a;
-      --card: #0b1220;
-      --muted:#94a3b8;
-      --accent:#10b981;
-      --glass:#172033;
-      --glass-2:#172033;
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%;margin:0;font-family:Inter,system-ui,Roboto,-apple-system,Segoe UI,Arial;background:linear-gradient(180deg,#071020,#0f172a);color:#e6eef6}
-    .container{max-width:960px;margin:18px auto;padding:16px}
-    .topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
-    .brand{display:flex;align-items:center;gap:12px}
-    .logo{width:44px;height:44;border-radius:10px;background:linear-gradient(135deg,#06b6d4,#7c3aed);display:flex;align-items:center;justify-content:center;font-weight:700;color:white}
-    h1{font-size:18px;margin:0}
-    .small{color:var(--muted);font-size:13px}
-    .tabs{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}
-    .tab{background:transparent;border:1px solid rgba(255,255,255,0.04);padding:8px 12px;border-radius:10px;cursor:pointer;color:var(--muted);font-weight:600}
-    .tab.active{background:linear-gradient(90deg,#0b1220,#172433);color:#fff;border-color:rgba(255,255,255,0.06);box-shadow:0 6px 18px rgba(2,6,23,0.6)}
-    .card{background:var(--card);border-radius:12px;padding:14px;margin-bottom:12px;box-shadow:0 6px 18px rgba(2,6,23,0.6)}
-    label{display:block;color:var(--muted);font-size:13px;margin-bottom:6px}
-    input[type="text"], textarea{width:100%;padding:10px;border-radius:8px;border:none;background:var(--glass-2);color:#fff;font-size:15px}
-    input[type="file"]{color:var(--muted)}
-    textarea{min-height:80px;resize:vertical}
-    .row{display:flex;gap:12px;flex-wrap:wrap}
-    .col{flex:1;min-width:220px}
-    .btn{background:var(--accent);color:#06201b;padding:10px 14px;border-radius:10px;border:none;cursor:pointer;font-weight:700}
-    .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)}
-    .progress{height:10px;background:rgba(255,255,255,0.06);border-radius:6px;overflow:hidden;margin-top:8px}
-    .progress > i{display:block;height:100%;background:linear-gradient(90deg,#10b981,#06b6d4);width:0%}
-    .gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
-    .videoCard{background:var(--glass);padding:8px;border-radius:10px;display:flex;flex-direction:column;gap:8px}
-    video{width:100%;border-radius:8px;background:black}
-    .meta{display:flex;align-items:center;justify-content:space-between;gap:8px}
-    .uinfo{display:flex;align-items:center;gap:8px}
-    .avatar{width:36px;height:36;border-radius:50%;background:linear-gradient(135deg,#06b6d4,#7c3aed);display:flex;align-items:center;justify-content:center;font-weight:700}
-    .muted{color:var(--muted);font-size:13px}
-    .signin{display:flex;gap:10px;align-items:center}
-    .hidden{display:none}
-    .center{display:flex;align-items:center;justify-content:center}
-    @media(max-width:600px){.row{flex-direction:column}}
-  </style>
-</head>
-<body>
-  <div class="container">
-    <div class="topbar">
-      <div class="brand">
-        <div class="logo">PB</div>
-        <div>
-          <h1>ur bro khan — Video Upload</h1>
-          <div class="small">Upload videos with title & description — stored in Firebase</div>
-        </div>
-      </div>
-
-      <div class="signin" id="authBlock">
-        <!-- dynamic: when signed in shows name/avatar + sign out -->
-        <div id="guestView">
-          <button id="googleLoginBtn" class="btn">Sign in with Google</button>
-        </div>
-        <div id="userView" class="hidden">
-          <div style="display:flex;align-items:center;gap:8px">
-            <div id="userAvatar" class="avatar">U</div>
-            <div style="text-align:right">
-              <div id="userName" style="font-weight:700"></div>
-              <div class="muted" id="userEmail"></div>
-            </div>
-          </div>
-          <button id="signOutBtn" class="btn ghost">Sign out</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="tabs">
-      <div class="tab active" data-tab="upload">Upload</div>
-      <div class="tab" data-tab="gallery">Gallery</div>
-      <div class="tab" data-tab="profile">Profile</div>
-    </div>
-
-    <!-- Upload tab -->
-    <div id="uploadTab" class="card">
-      <div id="mustLogin" class="card" style="background:rgba(255,255,255,0.02);margin-bottom:12px">
-        <div class="muted">You must be signed in to upload videos.</div>
-      </div>
-
-      <div id="uploadForm" class="hidden">
-        <label>Choose video</label>
-        <input type="file" id="videoFile" accept="video/*" />
-
-        <div style="height:12px"></div>
-
-        <label>Title</label>
-        <input type="text" id="title" placeholder="Video title" />
-
-        <label>Description</label>
-        <textarea id="description" placeholder="Short description"></textarea>
-
-        <div style="height:12px"></div>
-
-        <div style="display:flex;gap:10px;align-items:center">
-          <button id="uploadBtn" class="btn">Upload Video</button>
-          <div id="uploadStatus" class="muted"></div>
-        </div>
-
-        <div class="progress hidden" id="uploadProgress"><i></i></div>
-      </div>
-    </div>
-
-    <!-- Gallery tab -->
-    <div id="galleryTab" class="card hidden">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-        <div>
-          <strong>All Videos</strong>
-          <div class="muted">Videos uploaded by users — persistent</div>
-        </div>
-        <div class="muted" id="totalCount">0 videos</div>
-      </div>
-      <div id="gallery" class="gallery"></div>
-    </div>
-
-    <!-- Profile tab -->
-    <div id="profileTab" class="card hidden">
-      <div style="display:flex;gap:12px;align-items:center">
-        <div id="profileAvatar" class="avatar">U</div>
-        <div>
-          <div id="profileName" style="font-weight:700"></div>
-          <div class="muted" id="profileEmail"></div>
-        </div>
-      </div>
-
-      <div style="margin-top:12px">
-        <strong>Your uploads</strong>
-        <div class="muted">Videos uploaded by you</div>
-      </div>
-
-      <div id="myUploads" style="margin-top:10px" class="gallery"></div>
-    </div>
-
-  </div>
-
-  <!-- Firebase + app logic -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Video Upload | INDEVERYDAY</title>
   <script type="module">
-    // Firebase v10 modules
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-    import { getStorage, ref as storageRef, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
-    import { getDatabase, ref as dbRef, push, onChildAdded, query, orderByChild, equalTo, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+    // Firebase Imports
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
+    import { getDatabase, ref as dbRef, push, set, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-    // --- YOUR FIREBASE CONFIG (provided by you) ---
+    // Your Firebase Config
     const firebaseConfig = {
       apiKey: "AIzaSyDFPMf8HLMpS6DbZkdCR6T7GAm5sfz-TOw",
       authDomain: "urbrokhan-f631c.firebaseapp.com",
@@ -165,265 +22,150 @@
       measurementId: "G-TGT66KJV02"
     };
 
-    // init
+    // Initialize Firebase
     const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const provider = new GoogleAuthProvider();
     const storage = getStorage(app);
-    const db = getDatabase(app);
+    const database = getDatabase(app);
 
-    // UI elements
-    const googleLoginBtn = document.getElementById('googleLoginBtn');
-    const guestView = document.getElementById('guestView');
-    const userView = document.getElementById('userView');
-    const userNameEl = document.getElementById('userName');
-    const userEmailEl = document.getElementById('userEmail');
-    const userAvatar = document.getElementById('userAvatar');
-    const signOutBtn = document.getElementById('signOutBtn');
+    // Upload Handler
+    document.addEventListener("DOMContentLoaded", () => {
+      const uploadForm = document.getElementById("uploadForm");
+      const videoList = document.getElementById("videoList");
+      const progressBar = document.getElementById("progressBar");
 
-    const mustLogin = document.getElementById('mustLogin');
-    const uploadForm = document.getElementById('uploadForm');
-    const videoFile = document.getElementById('videoFile');
-    const titleInput = document.getElementById('title');
-    const descInput = document.getElementById('description');
-    const uploadBtn = document.getElementById('uploadBtn');
-    const uploadProgress = document.getElementById('uploadProgress');
-    const uploadStatus = document.getElementById('uploadStatus');
+      uploadForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const title = document.getElementById("title").value;
+        const desc = document.getElementById("description").value;
+        const file = document.getElementById("videoFile").files[0];
+        if (!file) return alert("Please select a video!");
 
-    const galleryTab = document.getElementById('galleryTab');
-    const uploadTab = document.getElementById('uploadTab');
-    const profileTab = document.getElementById('profileTab');
-    const tabs = document.querySelectorAll('.tab');
+        const storageRef = ref(storage, 'videos/' + file.name);
+        const uploadTask = uploadBytesResumable(storageRef, file);
 
-    const galleryEl = document.getElementById('gallery');
-    const totalCountEl = document.getElementById('totalCount');
-    const myUploadsEl = document.getElementById('myUploads');
-    const profileName = document.getElementById('profileName');
-    const profileEmail = document.getElementById('profileEmail');
-    const profileAvatar = document.getElementById('profileAvatar');
-
-    let currentUser = null;
-
-    // Tabs switching
-    tabs.forEach(t=>{
-      t.addEventListener('click', ()=> {
-        tabs.forEach(x=>x.classList.remove('active'));
-        t.classList.add('active');
-        const tab = t.dataset.tab;
-        uploadTab.classList.toggle('hidden', tab!=='upload');
-        galleryTab.classList.toggle('hidden', tab!=='gallery');
-        profileTab.classList.toggle('hidden', tab!=='profile');
-      });
-    });
-
-    // Auth handlers
-    googleLoginBtn.addEventListener('click', async ()=>{
-      try{
-        await signInWithPopup(auth, provider);
-        // onAuthStateChanged will update UI
-      }catch(err){
-        console.error('Login failed', err);
-        alert('Login failed: '+ (err.message || err));
-      }
-    });
-
-    signOutBtn.addEventListener('click', async ()=>{
-      await signOut(auth);
-      // UI will update via onAuthStateChanged
-    });
-
-    onAuthStateChanged(auth, user=>{
-      currentUser = user;
-      if (user){
-        // show user view
-        guestView.classList.add('hidden');
-        userView.classList.remove('hidden');
-        userNameEl.textContent = user.displayName || 'User';
-        userEmailEl.textContent = user.email || '';
-        userAvatar.textContent = (user.displayName||'U').split(' ').map(n=>n[0]).slice(0,2).join('').toUpperCase();
-        profileName.textContent = user.displayName || 'User';
-        profileEmail.textContent = user.email || '';
-        profileAvatar.textContent = userAvatar.textContent;
-        mustLogin.style.display = 'none';
-        uploadForm.classList.remove('hidden');
-        // load user's uploads
-        loadMyUploads();
-      } else {
-        guestView.classList.remove('hidden');
-        userView.classList.add('hidden');
-        mustLogin.style.display = 'block';
-        uploadForm.classList.add('hidden');
-      }
-    });
-
-    // Upload logic
-    uploadBtn.addEventListener('click', async ()=>{
-      if (!currentUser){ alert('Please sign in first'); return; }
-      const file = videoFile.files[0];
-      if (!file){ alert('Choose a video file'); return; }
-      const title = titleInput.value.trim() || 'Untitled';
-      const desc = descInput.value.trim() || '';
-
-      // sanitize file size? (optional)
-      if (file.size > 200 * 1024 * 1024){ // 200MB limit example
-        if(!confirm('File is larger than 200MB. Uploading large files may fail on slow connections. Continue?')) return;
-      }
-
-      const timestamp = Date.now();
-      const safeName = `${currentUser.uid}_${timestamp}_${file.name.replace(/\s+/g,'_')}`;
-      const sRef = storageRef(storage, `videos/${safeName}`);
-
-      const uploadTask = uploadBytesResumable(sRef, file);
-      uploadProgress.classList.remove('hidden');
-      uploadStatus.textContent = 'Starting upload...';
-      const progBar = uploadProgress.querySelector('i');
-
-      uploadTask.on('state_changed', snapshot=>{
-        const pct = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
-        progBar.style.width = pct + '%';
-        uploadStatus.textContent = `Uploading: ${pct}%`;
-      }, err=>{
-        console.error('Upload error', err);
-        uploadStatus.textContent = 'Upload failed';
-        alert('Upload failed: '+ err.message);
-      }, async ()=>{
-        // success
-        const url = await getDownloadURL(uploadTask.snapshot.ref);
-        uploadStatus.textContent = 'Saving metadata...';
-        // Save metadata in Realtime DB
-        const meta = {
-          title,
-          description: desc,
-          videoUrl: url,
-          storagePath: uploadTask.snapshot.ref.fullPath,
-          uploaderUid: currentUser.uid,
-          uploaderName: currentUser.displayName || 'User',
-          uploaderEmail: currentUser.email || '',
-          timestamp: Date.now()
-        };
-        await push(dbRef(db, 'videos'), meta);
-        uploadStatus.textContent = 'Upload completed';
-        uploadProgress.classList.add('hidden');
-        progBar.style.width = '0%';
-        // clear form
-        videoFile.value = '';
-        titleInput.value = '';
-        descInput.value = '';
-      });
-    });
-
-    // Load gallery in realtime
-    let total = 0;
-    const videosRef = dbRef(db, 'videos');
-    onChildAdded(videosRef, (snap)=>{
-      const data = snap.val();
-      addVideoCard(snap.key, data);
-      total++;
-      totalCountEl.textContent = total + (total===1 ? ' video' : ' videos');
-    });
-
-    // helper to create video card
-    function addVideoCard(key, data){
-      // container
-      const card = document.createElement('div');
-      card.className = 'videoCard';
-
-      // video element
-      const vid = document.createElement('video');
-      vid.setAttribute('controls','');
-      vid.src = data.videoUrl;
-      vid.preload = 'metadata';
-      card.appendChild(vid);
-
-      // title
-      const title = document.createElement('div');
-      title.style.fontWeight = '700';
-      title.textContent = data.title || 'Untitled';
-      card.appendChild(title);
-
-      // description
-      if (data.description){
-        const d = document.createElement('div');
-        d.className = 'muted';
-        d.style.fontSize = '13px';
-        d.textContent = data.description;
-        card.appendChild(d);
-      }
-
-      // meta row
-      const meta = document.createElement('div');
-      meta.className = 'meta';
-      const u = document.createElement('div');
-      u.className = 'uinfo';
-      const av = document.createElement('div');
-      av.className = 'avatar';
-      av.style.width='36px'; av.style.height='36px'; av.style.fontSize='14px';
-      av.textContent = (data.uploaderName||'U').split(' ').map(n=>n[0]).slice(0,2).join('').toUpperCase();
-      const uname = document.createElement('div');
-      uname.style.fontSize='13px';
-      uname.innerHTML = `<div style="font-weight:700">${data.uploaderName||'User'}</div><div class="muted" style="font-size:12px">${new Date(data.timestamp).toLocaleString()}</div>`;
-      u.appendChild(av); u.appendChild(uname);
-      meta.appendChild(u);
-
-      // actions (optional: download link)
-      const actions = document.createElement('div');
-      const dl = document.createElement('a');
-      dl.href = data.videoUrl;
-      dl.target = '_blank';
-      dl.textContent = 'Open';
-      dl.className = 'muted';
-      dl.style.fontSize='13px';
-      actions.appendChild(dl);
-      meta.appendChild(actions);
-
-      card.appendChild(meta);
-
-      // append to gallery
-      // newest first: prepend
-      galleryEl.prepend(card);
-
-      // if this belongs to current user also show in my uploads
-      if (currentUser && data.uploaderUid === currentUser.uid){
-        const myCard = card.cloneNode(true);
-        myUploadsEl.prepend(myCard);
-      }
-    }
-
-    // Load current user's uploads (on each auth change)
-    function loadMyUploads(){
-      myUploadsEl.innerHTML = '';
-      if (!currentUser) return;
-      // query by uploaderUid
-      const q = query(dbRef(db,'videos'), orderByChild('uploaderUid'));
-      onValue(q, snapshot=>{
-        myUploadsEl.innerHTML = ''; // refresh
-        snapshot.forEach(child=>{
-          const data = child.val();
-          if (data.uploaderUid === currentUser.uid){
-            // create card
-            const card = document.createElement('div');
-            card.className = 'videoCard';
-            const vid = document.createElement('video');
-            vid.setAttribute('controls','');
-            vid.src = data.videoUrl;
-            card.appendChild(vid);
-            const title = document.createElement('div');
-            title.style.fontWeight='700'; title.textContent = data.title || 'Untitled';
-            card.appendChild(title);
-            const d = document.createElement('div'); d.className='muted'; d.textContent = data.description||'';
-            card.appendChild(d);
-            myUploadsEl.prepend(card);
+        uploadTask.on('state_changed',
+          (snapshot) => {
+            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            progressBar.style.width = progress + "%";
+          },
+          (error) => {
+            alert("Upload failed: " + error.message);
+          },
+          async () => {
+            const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+            const videoRef = push(dbRef(database, 'videos'));
+            await set(videoRef, { title, desc, url: downloadURL });
+            uploadForm.reset();
+            progressBar.style.width = "0%";
+            alert("Video uploaded successfully!");
           }
+        );
+      });
+
+      // Load Videos
+      onValue(dbRef(database, 'videos'), (snapshot) => {
+        videoList.innerHTML = "";
+        snapshot.forEach((child) => {
+          const data = child.val();
+          const videoCard = document.createElement("div");
+          videoCard.className = "video-card";
+          videoCard.innerHTML = `
+            <video src="${data.url}" controls></video>
+            <h3>${data.title}</h3>
+            <p>${data.desc}</p>
+          `;
+          videoList.prepend(videoCard);
         });
-      }, {onlyOnce:false});
-    }
-
-    // Note: When new child added we appended to gallery; but when user signs in/out we need to refresh my uploads:
-    // Listen for auth change already calls loadMyUploads()
-
-    // On load, fetch the initial list ordered by timestamp descending (but onChildAdded already handles it)
-    // This ensures if there are existing videos before this client loaded, they appear.
-    // (onChildAdded above will trigger for each existing child.)
+      });
+    });
   </script>
+
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(to right, #f5f7fa, #c3cfe2);
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+    h1 {
+      background: #4285f4;
+      color: white;
+      padding: 15px;
+      margin: 0;
+      border-bottom-left-radius: 30px;
+      border-bottom-right-radius: 30px;
+    }
+    form {
+      background: white;
+      max-width: 500px;
+      margin: 30px auto;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    input, textarea, button {
+      width: 90%;
+      margin: 10px 0;
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+    button {
+      background: #34a853;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+    button:hover {
+      background: #2c8c46;
+    }
+    #progressBar {
+      width: 0%;
+      height: 8px;
+      background: #4285f4;
+      border-radius: 5px;
+      transition: width 0.4s;
+    }
+    #videoList {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      padding: 10px;
+    }
+    .video-card {
+      background: white;
+      margin: 10px;
+      padding: 10px;
+      border-radius: 15px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      width: 280px;
+      transition: transform 0.3s;
+    }
+    .video-card:hover {
+      transform: scale(1.05);
+    }
+    video {
+      width: 100%;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>🎥 INDEVERYDAY Video Upload</h1>
+
+  <form id="uploadForm">
+    <input type="text" id="title" placeholder="Enter video title" required />
+    <textarea id="description" placeholder="Enter video description" required></textarea>
+    <input type="file" id="videoFile" accept="video/*" required />
+    <div id="progressBar"></div>
+    <button type="submit">Upload Video</button>
+  </form>
+
+  <div id="videoList"></div>
 </body>
-  </html>
+</html>
